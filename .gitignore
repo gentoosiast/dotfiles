@@ -12,6 +12,9 @@
 # tmux
 !.tmux.conf
 
+# oh-my-zsh
+!.oh-my-zsh/
+
 # zsh
 !.zpath
 !.zprofile
