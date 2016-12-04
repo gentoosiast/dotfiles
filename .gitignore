@@ -1,0 +1,19 @@
+# Ignore everything
+/*
+
+# Except my dotfiles
+!.gitignore
+
+# ssh public key
+!.ssh/
+.ssh/*
+!.ssh/gent-main.pub
+
+# tmux
+!.tmux.conf
+
+# zsh
+!.zpath
+!.zprofile
+!.zshenv
+!.zshrc

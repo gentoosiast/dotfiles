@@ -1,0 +1,2 @@
+typeset -U path
+path=(~/bin $(ruby -e 'puts Gem.user_dir')/bin ~/.node_modules/bin $path)
