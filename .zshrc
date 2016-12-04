@@ -103,7 +103,7 @@ source /usr/share/doc/pkgfile/command-not-found.zsh
 # oh-my-zsh settings {{{
 
 # Path to your oh-my-zsh installation.
-ZSH=/usr/share/oh-my-zsh/
+ZSH=/usr/share/oh-my-zsh
 
 ZSH_CUSTOM=~/.oh-my-zsh
 
