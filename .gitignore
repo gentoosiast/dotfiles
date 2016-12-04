@@ -4,6 +4,11 @@
 # Except my dotfiles
 !.gitignore
 
+# aurget
+!.config/
+.config/*
+!.config/aurgetrc
+
 # ssh public key
 !.ssh/
 .ssh/*
