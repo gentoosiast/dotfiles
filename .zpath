@@ -1,2 +1,2 @@
 typeset -U path
-path=(~/bin $(ruby -e 'puts Gem.user_dir')/bin ~/.node_modules/bin $path)
+path=(~/bin $([[ -x /usr/bin/ruby ]] && echo $(ruby -e 'puts Gem.user_dir')/bin) ~/.node_modules/bin $path)

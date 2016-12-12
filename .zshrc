@@ -1,18 +1,19 @@
+alias adom='urxvt -fn "xft:Hack:size=16" -geometry 80x25 -e adom&|'
 alias cal='cal -m'
 alias feh='feh -T default'
-alias l=less ls='ls --color=auto --group-directories-first -l' m=man v=vim
-alias mount_vimwiki="encfs ~/SpiderOak\ Hive/vimwiki ~/vimwiki"
-alias pkg_db_clean="sudo pacman -Sc"
-alias adom='urxvt -fn "xft:Hack:size=16" -geometry 80x25 -e adom&|'
 alias freenet='sudo systemctl start freenet.service'
 alias i2p='sudo systemctl start i2prouter.service'
-alias ZZZ=poweroff
-alias twister='sudo systemctl start twister.service'
+alias l=less ls='ls --color=auto --group-directories-first -l' m=man v=vim
+alias mount_vimwiki="encfs ~/SpiderOak\ Hive/vimwiki ~/vimwiki"
 alias pacman_update_mirrors='sudo reflector --verbose --connection-timeout 30 --save /etc/pacman.d/mirrorlist --sort rate -l 5 -p https'
-alias wifi_strength='watch -n 1 cat /proc/net/wireless'
+alias pkg_db_clean="sudo pacman -Sc"
 alias scanphoto='scanimage --device genesys:libusb:004:002 --format=tiff --depth 16 --resolution 300 --mode Color -p -v > image.tiff'
+alias ssh-keygen-secure='ssh-keygen -o -a 100 -t ed25519'
+alias twister='sudo systemctl start twister.service'
+alias wifi_strength='watch -n 1 cat /proc/net/wireless'
 alias wol_DESKTOP='wol 50:e5:49:5a:9a:72'
 alias wol_MEDIACENTER='wol 50:e5:49:5c:ad:f7'
+alias ZZZ=poweroff
 
 
 function geeknote_add () {
@@ -83,22 +84,27 @@ setopt hist_reduce_blanks
 setopt hist_verify
 
 EDITOR=vim
-GEM_HOME=$(ruby -e 'puts Gem.user_dir')
+# By default, Bundler installs gems system-wide
+GEM_HOME=$([[ -x /usr/bin/ruby ]] && ruby -e 'puts Gem.user_dir')
 LESS='-iMqR'
 npm_config_prefix=~/.node_modules
 RI='-f ansi'
 # correct extracting of ZIP archives with Russian filenames
 # (requires unzip-natspec from AUR)
-UNZIP='-O cp866'
+[[ $(unzip | head -n 1) == *ALT\ Linux* ]] && UNZIP='-O cp866'
 
 export EDITOR GEM_HOME LESS npm_config_prefix RI UNZIP
 
-remind -h ~/.reminders
-envoy
-source <(envoy -p)
+# remind (Community) - A sophisticated calendar and alarm program.
+[[ -x /usr/bin/remind ]] && remind -h ~/.reminders
+
+# keychain (Extra) - A front-end to ssh-agent, allowing one long-running ssh-agent
+# process per system, rather than per login
+[[ -x /usr/bin/keychain ]] && eval $(keychain --eval --quiet ~/.ssh/gent-*(#qf0600))
 
 # tells you which package you need to install when command can't be found
-source /usr/share/doc/pkgfile/command-not-found.zsh
+# part of pkgfile (Extra) - a pacman .files metadata explorer
+[[ -x /usr/bin/pkgfile ]] && source /usr/share/doc/pkgfile/command-not-found.zsh
 
 # oh-my-zsh settings {{{
 
