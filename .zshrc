@@ -91,7 +91,7 @@ npm_config_prefix=~/.node_modules
 RI='-f ansi'
 # correct extracting of ZIP archives with Russian filenames
 # (requires unzip-natspec from AUR)
-[[ $(unzip | head -n 1) == *ALT\ Linux* ]] && UNZIP='-O cp866'
+[[ -x /usr/bin/unzip && $(unzip | head -n 1) == *ALT\ Linux* ]] && UNZIP='-O cp866'
 
 export EDITOR GEM_HOME LESS npm_config_prefix RI UNZIP
 
