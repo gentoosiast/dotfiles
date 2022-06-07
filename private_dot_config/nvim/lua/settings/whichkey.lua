@@ -15,7 +15,7 @@ wk.register({
     },
     ["'"] = { '<CMD>HopChar1<CR>', 'Hop Char' },
     ['$'] = { '<CMD>set list!<CR>', 'toggle list mode' },
-    b = { '<CMD>Telescope buffers ignore_current_buffer=false sort_mru=true<CR>', 'switch buffers' },
+    b = { '<CMD>Telescope buffers ignore_current_buffer=true sort_mru=true<CR>', 'switch buffers' },
     e = { '<CMD>NvimTreeToggle<CR>', 'Toggle nvim-tree' }
 }, { prefix = '<leader>' })
 
