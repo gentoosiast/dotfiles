@@ -1,0 +1,11 @@
+# https://www.chezmoi.io/docs/
+
+[merge]
+args = ["-d"]
+command = "nvim"
+
+encryption = "age"
+[age]
+identity = "~/.config/chezmoi/key.txt"
+recipient = "age1j8tmxj3vd3nw8g7rgkg5z6y79daaxgf844a67da9g6ur839spf6qnkchpy"
+

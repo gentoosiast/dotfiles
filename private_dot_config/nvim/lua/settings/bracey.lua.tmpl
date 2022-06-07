@@ -1,0 +1,8 @@
+-- https://github.com/turbio/bracey.vim
+
+{{ if (eq .chezmoi.osRelease.name "Ubuntu") }}
+vim.g.bracey_auto_start_browser = 0
+vim.g.bracey_server_allow_remote_connections = 1
+{{ end }}
+vim.g.bracey_server_port = 18080
+

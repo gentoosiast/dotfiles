@@ -1,0 +1,768 @@
+# Time-stamp: <2021-09-02 21:23:26 gentoosiast>
+
+# Menu selection
+zmodload zsh/complist
+
+# Zinit
+# https://github.com/zdharma-continuum/zinit
+# https://zdharma-continuum.github.io/zinit/wiki/INTRODUCTION/
+declare -A ZINIT # initial Zinit's hash definition, if configuring
+# before loading Zinit
+ZINIT[BIN_DIR]="${XDG_DATA_HOME:=~/.local/share}/zinit/bin"
+ZINIT[HOME_DIR]="${XDG_DATA_HOME:=~/.local/share}/zinit/bin"
+ZINIT[ZCOMPDUMP_PATH]="${XDG_CACHE_HOME:=~/.cache}/zcompdump"
+ZPFX="${XDG_DATA_HOME:=~/.local/share}/zinit/polaris"
+
+if [[ ! -f "$ZINIT[BIN_DIR]/zinit.zsh" ]]; then
+    git clone https://github.com/zdharma-continuum/zinit.git \
+    "$ZINIT[BIN_DIR]"
+fi
+source "$ZINIT[BIN_DIR]/zinit.zsh"
+
+zinit light-mode for zdharma-continuum/zinit-annex-bin-gem-node
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+source /etc/zsh_command_not_found
+{{ else if eq .chezmoi.osRelease.name "Arch Linux" }}
+# pkgfile (tells which package to install in Arch Linux if desired command was not found)
+if [[ -f /usr/share/doc/pkgfile/command-not-found.zsh ]]; then
+    zinit snippet /usr/share/doc/pkgfile/command-not-found.zsh
+fi
+{{ end }}
+
+zinit ice pick'alias-tips.plugin.zsh'
+zinit light djui/alias-tips
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# age
+# https://github.com/FiloSottile/age/
+zinit for \
+    id-as'age' \
+    as'program' \
+    from'gh-r' \
+    bpick'*linux-amd64*' \
+    pick'age/*' \
+    FiloSottile/age
+
+zinit for \
+    id-as'age-keygen.1' \
+    atclone'ln -sfv $PWD/age-keygen.1 $ZINIT[MAN_DIR]/man1' \
+    as'null' \
+    'https://raw.githubusercontent.com/FiloSottile/age/main/doc/age-keygen.1'
+
+zinit for \
+    id-as'age.1' \
+    atclone'ln -sfv $PWD/age.1 $ZINIT[MAN_DIR]/man1' \
+    as'null' \
+    'https://raw.githubusercontent.com/FiloSottile/age/main/doc/age.1'
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# bat
+# https://github.com/sharkdp/bat/
+zinit for \
+    id-as'bat' \
+    as'program' \
+    from'gh-r' \
+    bpick'*x86_64-unknown-linux-gnu*' \
+    pick'bat*/bat' \
+    atclone'bat*/bat cache --build; cp -vf bat*/autocomplete/bat.zsh _bat; ln -sfv $PWD/bat*/bat.1 $ZINIT[MAN_DIR]/man1' \
+    atpull'%atclone' \
+    @sharkdp/bat
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# chezmoi
+# https://github.com/twpayne/chezmoi
+zinit for \
+    id-as'chezmoi' \
+    as'program' \
+    from'gh-r' \
+    bpick'*linux-glibc_amd64*' \
+    atclone'cp -vf completions/chezmoi.zsh _chezmoi' \
+    atpull'%atclone' \
+    twpayne/chezmoi
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# delta
+# https://github.com/dandavison/delta/
+# https://dandavison.github.io/delta/
+zinit for \
+    id-as'delta' \
+    as'program' \
+    from'gh-r' \
+    bpick'*x86_64-unknown-linux-gnu*' \
+    sbin'**/delta -> delta' \
+    dandavison/delta
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# Exercism CLI
+# https://exercism.org/docs/using/solving-exercises/working-locally
+# https://github.com/exercism/cli
+zinit for \
+    id-as'exercism' \
+    as'program' \
+    from'gh-r' \
+    bpick'*linux-x86_64*' \
+    atclone'cp -vf shell/exercism_completion.zsh _exercism' \
+    atpull'%atclone' \
+    exercism/cli
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# fd
+# https://github.com/sharkdp/fd
+zinit for \
+    id-as'fd' \
+    as'program' \
+    from'gh-r' \
+    bpick'*x86_64-unknown-linux-gnu*' \
+    atclone'ln -sfv $PWD/**/fd.1 $ZINIT[MAN_DIR]/man1' \
+    sbin'**/fd -> fd' \
+    @sharkdp/fd
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# fzf
+# https://github.com/junegunn/fzf
+zinit for \
+    id-as'fzf' \
+    as'program' \
+    from'gh-r' \
+    sbin'fzf' \
+    junegunn/fzf
+
+zinit for \
+    id-as'fzf.1' \
+    atclone'ln -sfv $PWD/fzf.1 $ZINIT[MAN_DIR]/man1' \
+    as'null' \
+    'https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf.1'
+
+zinit for \
+    id-as'fzf-tmux.1' \
+    atclone'ln -sfv $PWD/fzf-tmux.1 $ZINIT[MAN_DIR]/man1' \
+    as'null' \
+    'https://raw.githubusercontent.com/junegunn/fzf/master/man/man1/fzf-tmux.1'
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# GitHub CLI
+# https://github.com/cli/cli/
+zinit for \
+    id-as'github-cli' \
+    as'program' \
+    from'gh-r' \
+    atclone'ln -sfv $PWD/**/*.1 $ZINIT[MAN_DIR]/man1; **/gh completion -s zsh > _gh' \
+    atpull'%atclone' \
+    sbin'**/gh' \
+    cli/cli
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# glow
+# https://github.com/charmbracelet/glow
+zinit for \
+    id-as'glow' \
+    as'program' \
+    from'gh-r' \
+    bpick'*linux_x86_64.tar.gz' \
+    charmbracelet/glow
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# navi
+# https://github.com/denisidoro/navi
+zinit for \
+    id-as'navi' \
+    as'program' \
+    from'gh-r' \
+    denisidoro/navi
+{{ end }}
+
+# pistol
+# https://github.com/doronbehar/pistol
+zinit for \
+    id-as'pistol' \
+    as'program' \
+    from'gh-r' \
+    sbin'pistol* -> pistol' \
+    doronbehar/pistol
+
+zinit for \
+    id-as'pistol-man' \
+    as'null' \
+    from'gh-r' \
+    bpick'pistol.1.gz' \
+    atclone'ln -sfv $PWD/pistol.1 $ZINIT[MAN_DIR]/man1' \
+    doronbehar/pistol
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# ripgrep
+# https://github.com/BurntSushi/ripgrep
+zinit for \
+    id-as'ripgrep' \
+    as'program' \
+    from'gh-r' \
+    atclone'ln -sfv $PWD/**/rg.1 $ZINIT[MAN_DIR]/man1' \
+    sbin'**/rg -> rg' \
+    BurntSushi/ripgrep
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# rust-analyzer
+# https://github.com/rust-analyzer/rust-analyzer/
+zinit for \
+    id-as'rust-analyzer' \
+    as'program' \
+    from'gh-r' \
+    ver'latest' \
+    bpick'*x86_64-unknown-linux-gnu*' \
+    sbin'rust-analyzer* -> rust-analyzer' \
+    has'rustup' \
+    rust-lang/rust-analyzer
+{{ end }}
+
+zinit for \
+    id-as'_rustc' \
+    is-snippet \
+    as'completion' \
+    has'rustc' \
+    'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/rust/_rustc'
+
+# Starship prompt (starship)
+# https://starship.rs/
+# https://github.com/starship/starship
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+zinit for \
+    id-as'starship' \
+    as'program' \
+    from'gh-r' \
+    bpick'*x86_64-unknown-linux-gnu*' \
+    atclone'./starship init zsh > init.zsh; ./starship completions zsh > _starship' \
+    atpull'%atclone' \
+    src'init.zsh' \
+    sbin'**/starship -> starship' \
+    starship/starship
+{{ else }}
+eval "$(starship init zsh)"
+{{ end }}
+
+# StyLua - lua linter
+# https://github.com/JohnnyMorganz/StyLua/
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+zinit for \
+    id-as'stylua' \
+    as'program' \
+    from'gh-r' \
+    JohnnyMorganz/StyLua
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# tealdeer
+# https://github.com/dbrgn/tealdeer
+zini for \
+    id-as'tldr' \
+    as'program' \
+    from'gh-r' \
+    sbin'tealdeer* -> tldr' \
+    dbrgn/tealdeer
+
+zinit for \
+    as'completion' \
+    id-as'_tldr' \
+    is-snippet \
+    'https://raw.githubusercontent.com/dbrgn/tealdeer/main/completion/zsh_tealdeer'
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# vivid
+# https://github.com/sharkdp/vivid/
+zinit for \
+    id-as'vivid' \
+    as'program' \
+    from'gh-r' \
+    bpick'*x86_64-unknown-linux-gnu*' \
+    sbin'**/vivid' \
+    @sharkdp/vivid
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# zk - A plain text note-taking assistant (Zettelkasten)
+# https://github.com/mickael-menu/zk
+zinit for \
+    id-as'zk' \
+    as'program' \
+    from'gh-r' \
+    mickael-menu/zk
+{{ end }}
+
+# zoxide - a smarter cd command (zoxide)
+# https://github.com/ajeetdsouza/zoxide/
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+zinit for \
+    id-as'zoxide' \
+    as'program' \
+    from'gh-r' \
+    atclone'./zoxide init zsh > init.zsh; ln -sfv $PWD/man/man1/* $ZINIT[MAN_DIR]/man1' \
+    atpull'%atclone' \
+    src'init.zsh' \
+    ajeetdsouza/zoxide
+{{ else }}
+eval "$(zoxide init zsh)"
+{{ end }}
+
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/colored-man-pages
+# NOTE: snippet uses Zsh colors autoloadable function
+autoload colors
+colors
+zinit snippet OMZP::colored-man-pages
+less_termcap[md]="${fg_bold[green]}"
+less_termcap[so]="${bg[green]}${fg[black]}"
+
+# A collection of LS_COLORS definitions (needs terminal with support
+#for 256 colors)
+#zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
+#      atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+#      atload'zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"'
+#zinit light trapd00r/LS_COLORS
+#zinit light marlonrichert/zsh-autocomplete
+
+if [[ ! -d "${XDG_CONFIG_HOME:=~/.config}/zsh/funcs/completions" ]]; then
+    mkdir -p "${XDG_CONFIG_HOME:=~/.config}/zsh/funcs/completions" 
+fi
+fpath=("${XDG_CONFIG_HOME:=~/.config}/zsh/funcs" "${XDG_CONFIG_HOME:=~/.config}/zsh/funcs/completions" "$fpath[@]")
+
+# install rustup and cargo completions
+if [[ -x "${CARGO_HOME}/bin/rustup" && ! -f "${XDG_CONFIG_HOME:=~/.config}/zsh/funcs/completions/_rustup" ]]; then
+    rustup completions zsh > "${XDG_CONFIG_HOME:=~/.config}/zsh/funcs/completions/_rustup" 
+    cp "${RUSTUP_HOME}/toolchains/stable-x86_64-unknown-linux-gnu/share/zsh/site-functions/_cargo" \
+        "${XDG_CONFIG_HOME:=~/.config}/zsh/funcs/completions/" 
+fi
+
+autoload -Uz compinit
+compinit -d "${ZINIT[ZCOMPDUMP_PATH]}"
+zinit cdreplay -q
+
+# https://gnunn1.github.io/tilix-web/manual/vteconfig/
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+	source /etc/profile.d/vte.sh
+fi
+
+# https://github.com/akermu/emacs-libvterm/#shell-side-configuration
+vterm_printf(){
+    if [ -n "$TMUX" ]; then
+        # Tell tmux to pass the escape sequences through
+        # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+
+# vterm-clear-scrollback
+if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+    alias clear='vterm_printf "51;Evterm-clear-scrollback";tput clear'
+fi
+
+# https://github.com/akermu/emacs-libvterm/#message-passing
+vterm_cmd() {
+    local vterm_elisp
+    vterm_elisp=""
+    while [ $# -gt 0 ]; do
+        vterm_elisp="$vterm_elisp""$(printf '"%s" ' "$(printf "%s" "$1" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')")"
+        shift
+    done
+    vterm_printf "51;E$vterm_elisp"
+}
+
+# https://github.com/akermu/emacs-libvterm/#vterm-buffer-name-string
+autoload -U add-zsh-hook
+add-zsh-hook -Uz chpwd (){ print -Pn "\e]2;%m:%2~\a" }
+
+# Recommended by GnuPG User Manual, Chapter 2
+export GPG_TTY=$TTY
+
+# temporary WSL2 Windows Terminal fix
+if [[ -v WT_SESSION ]]; then
+    export COLORTERM=truecolor
+fi
+
+# color capabilities
+if [[ $terminfo[colors] -eq 16777216 || $COLORTERM == "truecolor" ]]; then
+    # bat - Cat clone with syntax highlighting and git integration (bat)
+    # https://github.com/sharkdp/bat
+    export BAT_THEME=Coldark-Dark
+    # vivid - LS_COLORS manager with multiple themes (vivid)
+    # https://github.com/sharkdp/vivid
+    export LS_COLORS="$(vivid generate iceberg-dark)"
+    # pistol - General purpose file previewer (pistol-git (AUR))
+    # https://github.com/doronbehar/pistol
+    export PISTOL_CHROMA_FORMATTER=terminal16m
+elif [[ $terminfo[colors] -eq 256 ]]; then
+    export BAT_THEME=ansi
+    export LS_COLORS="$(vivid -m 8-bit generate snazzy)"
+    export PISTOL_CHROMA_FORMATTER=terminal256
+else
+    export BAT_THEME=ansi
+    export LS_COLORS="$(vivid -m 8-bit generate snazzy)"
+fi
+zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"
+
+alias aur_find_dead_packages="comm -23 <(pacman -Qqm | sort) <(curl https://aur.archlinux.org/packages.gz | gzip -cd | sort)"
+alias btplay='btplay -p mpv'
+alias btfs='btfs --min-port=46240 --max-port=46244'
+alias cal='cal -m'
+alias diff='diff --color=auto'
+alias feh='feh -T default'
+alias grep='grep --color=auto'
+alias l=less
+alias lf='env TERM=foot lf'
+alias locate=plocate
+alias ls='ls --color=auto --group-directories-first -lv'
+alias m=man
+alias mount_vimwiki="encfs ~/SpiderOak\ Hive/vimwiki ~/vimwiki"
+alias mpg123='mpg123 -o pulse'
+alias ncdu='ncdu --color dark'
+alias nnn='env TERM=tmux-256color nnn'
+alias ogg123='ogg123 -d pulse'
+alias pacman_update_mirrors='sudo reflector --verbose --connection-timeout 30 --save /etc/pacman.d/mirrorlist --sort rate -l 5 -p https'
+alias pacman_db_clean="sudo pacman -Sc"
+alias scanphoto='scanimage --device genesys:libusb:004:002 --format=tiff --depth 16 --resolution 300 --mode Color -p -v > image.tiff'
+alias sdcv='sdcv --utf8-output --utf8-input --color'
+alias somafm_deepspace='mpv https://somafm.com/deepspaceone130.pls'
+alias somafm_defcon='mpv https://somafm.com/defcon256.pls'
+alias somafm_drone='mpv https://somafm.com/dronezone256.pls'
+alias somafm_groovesalad='mpv https://somafm.com/groovesalad256.pls'
+alias somafm_n5md='mpv https://somafm.com/n5md130.pls'
+alias somafm_spacestation='mpv https://somafm.com/spacestation130.pls'
+alias somafm_vaporwaves='mpv https://somafm.com/vaporwaves130.pls'
+alias sopcast-launcher='sopcast-launcher -p mpv'
+alias ssh-keygen-secure='ssh-keygen -a 100 -t ed25519'
+alias stk-simply='rlwrap stk -load ~/simply.scm'
+alias tunnelbear_start='sudo systemctl start openvpn-client@TunnelBearUnitedStates'
+alias tunnelbear_stop='sudo systemctl stop openvpn-client@TunnelBearUnitedStates'
+alias v=nvim
+alias weechat='env TERM=tmux-256color weechat'
+alias wifi_strength='watch -n 1 cat /proc/net/wireless'
+alias ZZZ='systemctl poweroff'
+
+# git aliases
+alias gCO='git checkout'
+alias gCT='git commit'
+alias gL='git log'
+alias gS='git status'
+
+# XDG Base Directory compatibility
+alias info="info --init-file ${XDG_CONFIG_HOME:=~/.config}/texinfo/infokey"
+alias pidgin="pidgin --config=${XDG_DATA_HOME:=~/.local/share}/pidgin"
+alias units="units --history ${XDG_CACHE_HOME:=~/.cache}/units_history"
+alias wget="wget --hsts-file=${XDG_CACHE_HOME:=~/.cache}/wget-hsts"
+alias xbindkeys="xbindkeys ${XDG_CONFIG_HOME:=~/.config}/xbindkeys/config"
+HISTFILE="${XDG_CACHE_HOME:=~/.cache}/zsh_history"
+export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:=~/.config}/ripgrep/ripgreprc"
+
+# suffix aliases
+alias -s json='jq .'
+alias -s md=mdless
+alias -s pdf=zathura
+
+# named directories (directory aliases)
+{{ if eq .chezmoi.osRelease.name "Arch Linux" }}
+hash -d TorBrowser=${XDG_DATA_HOME:=~/.local/share}/torbrowser/tbb/x86_64/tor-browser_en-US/Browser/Downloads
+{{ else if eq .chezmoi.osRelease.name "Ubuntu" }}
+hash -d Essential=/mnt/c/Users/gento/essential
+{{ end }}
+
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# wsl-notify-send
+# https://github.com/stuartleeks/wsl-notify-send
+notify-send() { wsl-notify-send.exe --category $WSL_DISTRO_NAME "${@}"; }
+{{ end }}
+
+# powerful mv, cp, ln replacement
+autoload -Uz zmv
+
+# Emacs keymap
+bindkey -e
+
+# terminfo
+typeset -A key
+
+key[Backspace]="${terminfo[kbs]}"
+key[Insert]="${terminfo[kich1]}"
+key[Delete]="${terminfo[kdch1]}"
+key[Down]="${terminfo[kcud1]}"
+key[Up]="${terminfo[kcuu1]}"
+key[Left]="${terminfo[kcub1]}"
+key[Right]="${terminfo[kcuf1]}"
+key[Home]="${terminfo[khome]}"
+key[End]="${terminfo[kend]}"
+key[PgUp]="${terminfo[kpp]}"
+key[PgDown]="${terminfo[knp]}"
+key[Shift-Tab]="${terminfo[kcbt]}"
+key[F1]="${terminfo[kf1]}"
+key[F2]="${terminfo[kf2]}"
+key[F3]="${terminfo[kf3]}"
+key[F4]="${terminfo[kf4]}"
+key[F5]="${terminfo[kf5]}"
+key[F6]="${terminfo[kf6]}"
+key[F7]="${terminfo[kf7]}"
+key[F8]="${terminfo[kf8]}"
+key[F9]="${terminfo[kf9]}"
+key[F10]="${terminfo[kf10]}"
+key[F11]="${terminfo[kf11]}"
+key[F12]="${terminfo[kf12]}"
+
+# extended keys
+# https://man.archlinux.org/man/user_caps.5
+key[Ctrl-Left]="${terminfo[kLFT5]}"
+key[Ctrl-Right]="${terminfo[kRIT5]}"
+key[Ctrl-Up]="${terminfo[kUP5]}"
+key[Ctrl-Down]="${terminfo[kDN5]}"
+key[Ctrl-PgUp]="${terminfo[kPRV5]}"
+key[Ctrl-PgDown]="${terminfo[kNXT5]}"
+
+[[ -n "${key[Delete]}"    ]] && bindkey -- "${key[Delete]}"     delete-char
+
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+[[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
+[[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
+
+#
+# TODO: configure smart case in isearch mode. Also I want history
+# numbers in isearch mode
+
+# menu selection
+## TODO: color background of selected match
+unset MENUSELECT
+#MENUPROMPT=''
+bindkey -M menuselect "\C-t" accept-and-infer-next-history
+[[ -n "${key[Shift-Tab]}" ]] && bindkey "${key[Shift-Tab]}" menu-select
+[[ -n "${key[Shift-Tab]}" ]] && bindkey -M menuselect -- "${key[Shift-Tab]}" reverse-menu-select
+[[ -n "${key[PgUp]}"   ]] && bindkey -M menuselect -- "${key[PgUp]}"   backward-word
+[[ -n "${key[PgDown]}" ]] && bindkey -M menuselect -- "${key[PgDown]}" forward-word
+[[ -n "${key[Ctrl-Up]}"      ]] && bindkey -M menuselect -- "${key[Ctrl-Up]}"     beginning-of-history
+[[ -n "${key[Ctrl-Down]}"    ]] && bindkey -M menuselect -- "${key[Ctrl-Down]}"   end-of-history
+[[ -n "${key[Ctrl-Left]}"    ]] && bindkey -M menuselect -- "${key[Ctrl-Left]}"   beginning-of-line
+[[ -n "${key[Ctrl-Right]}"   ]] && bindkey -M menuselect -- "${key[Ctrl-Right]}"  end-of-line
+[[ -n "${key[Ctrl-PgUp]}"    ]] && bindkey -M menuselect -- "${key[Ctrl-PgUp]}"   vi-backward-blank-word
+[[ -n "${key[Ctrl-PgDown]}"  ]] && bindkey -M menuselect -- "${key[Ctrl-PgDown]}" vi-forward-blank-word
+[[ -n "${key[Insert]}" ]] && bindkey -M menuselect -- "${key[Insert]}" accept-and-hold
+bindkey -M menuselect "\C-s" history-incremental-search-forward
+bindkey -M menuselect "\C-r" history-incremental-search-backward
+bindkey -M menuselect "\C-g" send-break
+bindkey -M menuselect "\C-l" redisplay
+bindkey -M menuselect "\C-/" undo
+# Ctrl-Space
+bindkey -M menuselect "\C-@" vi-insert
+# accept-and-infer-next-history
+
+[[ -n "${key[Ctrl-Left]}" ]] && bindkey -- "${key[Ctrl-Left]}" backward-word
+[[ -n "${key[Ctrl-Right]}" ]] && bindkey -- "${key[Ctrl-Right]}" forward-word
+
+
+# Finally, make sure the terminal is in application mode, when zle is
+# active. Only then are the values from $terminfo valid.
+if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
+    autoload -Uz add-zle-hook-widget
+    function zle_application_mode_start { echoti smkx }
+    function zle_application_mode_stop { echoti rmkx }
+    add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+    add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+fi
+
+READNULLCMD=less
+
+# better C-h help system
+(( ${+aliases[run-help]} )) && unalias run-help
+autoload -Uz run-help
+autoload run-help-git
+
+# removed '/' so movement and deletion commands stop after each
+# segment of path/URL
+WORDCHARS=${WORDCHARS/\//}
+
+ZBEEP='\e[?5h\e[?5l'
+
+# change directories just by typing their name
+setopt auto_cd
+
+# correction
+setopt correct
+
+# pattern matching (globbing)
+setopt extended_glob
+setopt numeric_glob_sort
+
+# disable ^S/^Q used for flow control and make them available for key bindings
+unsetopt flow_control
+
+# completion
+## custom completion functions
+zstyle ':completion:*:messages' format %d
+zstyle ':completion:*:warnings' format 'No matches: %d'
+zstyle ':completion:*:default' menu 'select=0'
+
+# https://github.com/mpv-player/mpv/wiki/Zsh-completion-customization
+zstyle ':completion:*:*:mpv:*' file-patterns '*.(#i)(flv|mp4|webm|mkv|wmv|mov|avi|mp3|ogg|wma|flac|wav|aiff|m4a|m4b|m4v|gif|ifo)(-.) *(-/):directories' '*:all-files'
+
+zstyle ":completion:*" list-dirs-first true
+zstyle ':completion:*' group-name ''
+
+# history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt extended_history
+setopt share_history
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt hist_verify
+
+# directory stack
+alias d='dirs -v'
+setopt auto_pushd
+setopt pushd_ignore_dups
+
+# editor to use if Emacs server is not running
+ALTERNATE_EDITOR=nvim
+# aur (aurutils)
+AUR_PAGER='env TERM=tmux-256color nnn'
+EDITOR=nvim
+GREP_COLORS='ms=01;32:mc=01;31:sl=:cx=:fn=35:ln=32:bn=32:se=36'
+{{ if (eq .chezmoi.osRelease.name "Ubuntu") }}
+# Old version of less in Ubuntu doesn't support --use-color
+BAT_PAGER='less -+J -FiMqR'
+LESS='-iJMqR'
+{{ else }}
+LESS='--use-color -iJMqRDE7.161$DP7.64'
+{{ end }}
+LESSOPEN="|pistol %s"
+MPD_HOST=192.168.100.100
+NNN_ARCHIVE="\\.(7z|bz2|gz|rar|tar|tgz|zip)$"
+NNN_BMS="m:/mnt/win_c/temp/mpdmusic;b:/mnt/win_d/books/IT"
+NNN_FIFO="${XDG_RUNTIME_DIR}/nnn.fifo"
+# -r option requires installed jaapi-advcpmv (AUR)
+NNN_OPTS="QrS"
+NNN_PLUG='p:preview-tui;u:getplugs'
+PAGER=less
+PISTOL_CHROMA_STYLE=paraiso-dark
+# ri command-line tool which provides Ruby documentation
+RI='-f ansi'
+TMUX_TMPDIR="${XDG_RUNTIME_DIR}"
+# correct extracting of ZIP archives with Russian filenames
+# (requires unzip-natspec from AUR)
+UNZIP='-I utf8'
+# use pistol-git (AUR) in nnn file-manager plugin preview-tui
+USE_PISTOL=1
+VISUAL=nvim
+# fallback starting URL for w3m
+WWW_HOME='https://www.google.com/'
+
+# zk default notebook directory
+# https://github.com/mickael-menu/zk/blob/main/docs/notebook.md
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+ZK_NOTEBOOK_DIR='/mnt/c/Users/gento/essential/zk/'
+{{ else if eq .chezmoi.osRelease.name "Arch Linux" }}
+ZK_NOTEBOOK_DIR='~/essential/zk/'
+{{ end }}
+
+export ALTERNATE_EDITOR AUR_PAGER BAT_PAGER EDITOR GREP_COLORS LESS LESSOPEN \
+    MPD_HOST NNN_ARCHIVE NNN_BMS NNN_FIFO NNN_OPTS NNN_PLUG PAGER \
+    PISTOL_CHROMA_STYLE RI TMUX_TMPDIR UNZIP USE_PISTOL VISUAL \
+    WWW_HOME ZK_NOTEBOOK_DIR
+
+# remind - A sophisticated calendar and alarm program
+# pacman -Sy remind
+#[[ -x /usr/bin/remind ]] && remind -h ~/.reminders
+
+# One fortune cookie every 12 hours
+# pacman -Sy fortune-mod ponysay
+if [[ (-x /usr/bin/fortune || -x /usr/games/fortune) &&
+          ( ! -f ${XDG_CACHE_HOME:=~/.cache}/fortune ||
+                -n ${XDG_CACHE_HOME:=~/.cache}/fortune(#qNmh+12) ) ]]; then
+    touch ${XDG_CACHE_HOME:=~/.cache}/fortune
+    if [[ -x /usr/bin/ponysay ]]; then
+        fortune | ponysay
+    else
+        fortune
+    fi
+fi
+
+# Completion with fuzzy matching using `fzf' package
+#
+# FZF binary settings
+# Use fd to filter out files marked ignore in Git
+#export FZF_DEFAULT_COMMAND='fd --type f --prune'
+# FZF completion.zsh & key-bindings.zsh settings
+# Alt-C - select child directory using fuzzy completion & cd to it
+#export FZF_ALT_C_COMMAND='fd --type d'
+# Use ~~ as the trigger sequence instead of the default **
+#export FZF_COMPLETION_TRIGGER='~~'
+# Options to fzf command
+#export FZF_COMPLETION_OPTS='+c -x --color=dark'
+# Ctrl-T - select several files using fuzzy completion as arguments for the command
+#export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+# pacman -Sy fd
+#_fzf_compgen_path() {
+#  fd --hidden --follow --exclude ".git" . "$1"
+#}
+
+# Use fd to generate the list for directory completion
+#_fzf_compgen_dir() {
+#  fd --type d --hidden --follow --exclude ".git" . "$1"
+#}
+
+# fzf in zsh
+#zplugin snippet /usr/share/fzf/key-bindings.zsh
+#zplugin snippet /usr/share/fzf/completion.zsh
+
+#autoload -Uz promptinit
+#promptinit
+#prompt gentoosiast
+
+# https://github.com/akermu/emacs-libvterm/#directory-tracking-and-prompt-tracking
+vterm_prompt_end() {
+    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)";
+}
+setopt PROMPT_SUBST
+PROMPT=$PROMPT'%{$(vterm_prompt_end)%}'
+
+# broot - Fuzzy Search + tree + cd (broot)
+# https://github.com/Canop/broot
+if [[ -f ${XDG_CONFIG_HOME:=~/.config}/broot/launcher/bash/br ]]; then
+    source ${XDG_CONFIG_HOME:=~/.config}/broot/launcher/bash/br
+fi
+
+{{ if (eq .chezmoi.osRelease.name "Ubuntu") }}
+export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
+if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
+    rm -f "$SSH_AUTH_SOCK"
+    wsl2_ssh_pageant_bin="/mnt/c/Soft/wsl2-ssh-pageant/wsl2-ssh-pageant.exe"
+    if test -x "$wsl2_ssh_pageant_bin"; then
+        (setsid nohup socat UNIX-LISTEN:"$SSH_AUTH_SOCK,fork" EXEC:"$wsl2_ssh_pageant_bin" >/dev/null 2>&1 &)
+    else
+        echo >&2 "WARNING: $wsl2_ssh_pageant_bin is not executable."
+    fi
+    unset wsl2_ssh_pageant_bin
+fi
+{{ end }}
+
+# taskwarrior
+if [[ -x /usr/bin/task ]]; then
+    task
+fi

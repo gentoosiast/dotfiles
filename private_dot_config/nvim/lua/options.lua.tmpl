@@ -1,0 +1,52 @@
+vim.g.mapleader = ' '
+
+-- enable truecolor for supported terminals
+if vim.env.COLORTERM == 'truecolor' or vim.env.WT_SESSION ~= nil or vim.env.VTE_VERSION ~= nil then
+   vim.opt.termguicolors = true
+end
+
+vim.opt.inccommand = 'nosplit'
+
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+vim.opt.number = true
+vim.opt.relativenumber = true
+
+vim.opt.clipboard = 'unnamedplus'
+
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+
+vim.opt.listchars:append("eol:↴")
+
+vim.opt.spelllang = 'en_us,ru_ru'
+
+vim.opt.timeoutlen = 500
+
+vim.opt.undofile = true
+
+if vim.fn.executable('rg') == 1 then
+    vim.opt.grepprg = 'rg --hidden --vimgrep --glob !.git/ $*'
+    vim.opt.grepformat:prepend { '%f:%l:%c:%m' }
+end
+
+vim.opt.signcolumn = 'yes'
+
+-- neovide
+-- https://github.com/neovide/neovide/wiki/Configuration
+vim.g.neovide_cursor_vfx_mode = 'sonicboom'
+
+-- Orgmode.nvim: concealing of links in .org documents
+vim.opt.conceallevel = 2
+vim.opt.concealcursor = 'nc'
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+-- makes startup faster, see https://www.reddit.com/r/neovim/comments/stykim/startuptime_highy_affected_by_python3/
+vim.g.python3_host_prog = '/usr/bin/python3'
+{{ end }}
+
+-- global statusline
+vim.opt.laststatus = 3
+

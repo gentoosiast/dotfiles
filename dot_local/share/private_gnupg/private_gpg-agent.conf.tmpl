@@ -1,0 +1,66 @@
+# Helps to avoid X-sniffing attacks on X-Servers
+grab
+
+# Disallow interactive updates of the list of trusted keys (trustlist.txt)
+no-allow-mark-trusted
+
+# Integration with Emacs
+# allow-emacs-pinentry
+
+# Do not allow to bypass check of passphrase constraints (password length, password change request)
+# enforce-passphrase-constraints
+
+# Minimal length of a passphrase
+min-passphrase-len 16
+
+# Ask the user to change the passphrase every month
+max-passphrase-days 30
+
+# Use UTF-8 char to display hidden characters in pinentry
+# pinentry-invisible-char char
+
+# Timeout after N seconds with no user input. A Pinentry may or may not honor this request
+pinentry-timeout 180
+
+# Use program filename as the PIN entry
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+pinentry-program /usr/bin/pinentry-curses
+{{ else }}
+pinentry-program /usr/bin/pinentry-gnome3
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Arch Linux" }}
+# Use gpg-agent as a drop-in replacement for the ssh-agent
+# SSH keys need to be added to the gpg-agent initially through the ssh-add
+# utility
+# Start gpg-agent if needed by this simple command: gpg-connect-agent /bye
+# Also I can start gpg-agent with systemd user service
+# Check page 24 of gnupg user manual for info about additions to .zshrc
+enable-ssh-support
+{{ end }}
+
+# Set the digest algorithm used to compute ssh fingerprints that are
+# communicated to the user, e.g. in pinentry dialogs. OpenSSH uses SHA256 and I
+# should use it too
+ssh-fingerprint-digest SHA256
+
+# To view the actually used iteration count and the milliseconds required for an S2K operation use:
+# $ gpg-connect-agent 'GETINFO s2k_count' /bye
+# $ gpg-connect-agent 'GETINFO s2k_time' /bye
+#
+# To view the auto-calibrated count use:
+# $ gpg-connect-agent 'GETINFO s2k_count_cal' /bye
+#
+# s2k-calibration milliseconds
+#
+# Iteration count to protect the passphrase. This setting requires 1 second to
+# mangle a given passphrase
+s2k-count 59484160
+
+# debug with "watchgnupg --force --time-only $(gpgconf --list-dirs socketdir)/S.log"
+#debug-level basic
+#log-file socket://
+
+default-cache-ttl 3600
+max-cache-ttl 21600
+

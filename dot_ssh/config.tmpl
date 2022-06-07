@@ -1,0 +1,6 @@
+Host *
+	User gentoosiast
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+	SendEnv WT_SESSION
+{{ end }}
+

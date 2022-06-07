@@ -1,0 +1,17 @@
+[user]
+	name = Sergey Koksharov
+	email = gentoosiastic@gmail.com
+	signingkey = 37A669753FA8BC8A9664DB864C44FAF16BEBEC9C
+[commit]
+	gpgSign = true
+[tag]
+	gpgSign = true
+[push]
+	gpgSign = if-asked
+[alias]
+    co = checkout
+	st = status
+[init]
+	defaultBranch = main
+# delta
+# https://dandavison.github.io/delta/

@@ -1,0 +1,9 @@
+# Time-stamp: <2021-08-14 20:36:19 gentoosiast>
+
+{{ if ne .chezmoi.osRelease.name "Ubuntu" }}
+# Use gpg-agent as OpenSSH agent
+# https://wiki.archlinux.org/title/GnuPG#SSH_agent
+SSH_AGENT_PID=""
+SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
+{{ end }}
+

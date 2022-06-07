@@ -1,0 +1,15 @@
+-- https://github.com/nvim-orgmode/orgmode
+-- https://nvim-orgmode.github.io/
+
+-- Load custom tree-sitter grammar for org filetype
+require('orgmode').setup_ts_grammar()
+require('orgmode').setup({
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+    org_agenda_files = { '/mnt/c/Users/gento/essential/orgmode/*' },
+    org_default_notes_file = '/mnt/c/Users/gento/essential/orgmode/refile.org'
+{{ else }}
+    org_agenda_files = { '~/essential/orgmode/*' },
+    org_default_notes_file = '~/essential/orgmode/refile.org'
+{{ end }}
+})
+
