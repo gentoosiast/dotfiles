@@ -1,0 +1,3 @@
+[tool]
+fzf-preview = "glow -s ~/.config/glow/dracula.json {-1}"
+
