@@ -1,6 +1,6 @@
-# https://docs.npmjs.com/cli/v8/configuring-npm/install
-prefix=${XDG_DATA_HOME}/npm
-cache=${XDG_CACHE_HOME}/npm
-init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
+prefix=/home/gentoosiast/.local/share/npm
+cache=/home/gentoosiast/.cache/npm
+init-module=/home/gentoosiast/.config/npm/config/npm-init.js
 ignore-scripts=true
-
+init.author.email=gentoosiastic@gmail.com
+init.author.name=Sergey Koksharov
