@@ -34,7 +34,11 @@ return require('packer').startup(function(use)
 	      config = setup_plugin('lualine'),
           disable = true
       }
-      use 'kyazdani42/nvim-web-devicons'
+      -- requires patched nerdfont
+      use {
+          'kyazdani42/nvim-web-devicons',
+          config = setup_plugin('nvim-web-devicons'),
+      }
       use {
           'rebelot/heirline.nvim',
 	      requires = {'kyazdani42/nvim-web-devicons', opt = true},
