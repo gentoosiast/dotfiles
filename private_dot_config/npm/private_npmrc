@@ -2,5 +2,5 @@ prefix=/home/gentoosiast/.local/share/npm
 cache=/home/gentoosiast/.cache/npm
 init-module=/home/gentoosiast/.config/npm/config/npm-init.js
 ignore-scripts=true
-init.author.email=gentoosiastic@gmail.com
-init.author.name=Sergey Koksharov
+init-author-email=gentoosiastic@gmail.com
+init-author-name=Sergey Koksharov
