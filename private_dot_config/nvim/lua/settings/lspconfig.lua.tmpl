@@ -61,6 +61,15 @@ for _, lsp in pairs(servers) do
         })
     end
 
+    if lsp == 'html' then
+        config = vim.tbl_deep_extend('force', config, {
+            init_options = {
+                -- I prefer prettier
+                provideFormatter = false
+            }
+        })
+    end
+
     if lsp == 'jsonls' then
         config = vim.tbl_deep_extend('force', config, {
             settings = {
