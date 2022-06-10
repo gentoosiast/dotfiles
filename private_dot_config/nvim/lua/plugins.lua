@@ -42,7 +42,7 @@ return require('packer').startup(function(use)
       use {
           'rebelot/heirline.nvim',
 	      requires = {'kyazdani42/nvim-web-devicons', opt = true},
-          after = { 'everforest', 'gitsigns.nvim', 'lsp-status.nvim' },
+          after = { 'everforest', 'gitsigns.nvim', 'lsp-status.nvim', 'nvim-gps' },
           config = setup_plugin('heirline')
       }
       use 'nvim-lua/lsp-status.nvim'
@@ -51,6 +51,11 @@ return require('packer').startup(function(use)
 	      'sainnhe/everforest',
 	      config = setup_plugin('everforest_theme'),
 	      -- after = 'lualine.nvim'
+      }
+      use {
+        'SmiteshP/nvim-gps',
+        requires = 'nvim-treesitter/nvim-treesitter',
+        config = setup_plugin('nvim-gps')
       }
       use 'rebelot/kanagawa.nvim'
       use 'gpanders/editorconfig.nvim'

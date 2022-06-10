@@ -233,6 +233,12 @@ local LSP = {
     },
 }
 
+local GPS = {
+    condition = require'nvim-gps'.is_available,
+    provider = require'nvim-gps'.get_location,
+    hl = { fg = "gray" },
+}
+
 local Align = { provider = "%=" }
 local Space = { provider = " " }
  
@@ -248,6 +254,8 @@ local DefaultStatusline = {
     FileFormat,
     Space,
     Git,
+    Space,
+    GPS,
     Align,
     LSP,
     Spell,
