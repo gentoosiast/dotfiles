@@ -42,7 +42,7 @@ return require('packer').startup(function(use)
       use {
           'rebelot/heirline.nvim',
 	      requires = {'kyazdani42/nvim-web-devicons', opt = true},
-          after = { 'everforest', 'gitsigns.nvim', 'lsp-status.nvim', 'nvim-gps' },
+          after = { 'everforest', 'nvim-web-devicons', 'gitsigns.nvim', 'lsp-status.nvim', 'nvim-gps' },
           config = setup_plugin('heirline')
       }
       use 'nvim-lua/lsp-status.nvim'
