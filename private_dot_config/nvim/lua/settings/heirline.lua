@@ -258,6 +258,7 @@ local DefaultStatusline = {
     GPS,
     Align,
     LSP,
+    Space,
     Spell,
     Ruler
 }
