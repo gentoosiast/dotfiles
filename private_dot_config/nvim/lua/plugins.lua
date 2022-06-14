@@ -223,11 +223,6 @@ return require('packer').startup(function(use)
       }
 
       use {
-          'turbio/bracey.vim',
-          config = setup_plugin('bracey')
-      }
-
-      use {
           'windwp/nvim-ts-autotag',
           config = setup_plugin('nvim-ts-autotag')
       }
