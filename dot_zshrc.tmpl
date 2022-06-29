@@ -98,6 +98,16 @@ zinit for \
 {{ end }}
 
 {{ if eq .chezmoi.osRelease.name "Ubuntu" }}
+# deno (A modern runtime for JavaScript and TypeScript)
+# https://deno.land/
+zinit for \
+    id-as'deno' \
+    as'program' \
+    from'gh-r' \
+    denoland/deno
+{{ end }}
+
+{{ if eq .chezmoi.osRelease.name "Ubuntu" }}
 # Exercism CLI
 # https://exercism.org/docs/using/solving-exercises/working-locally
 # https://github.com/exercism/cli
