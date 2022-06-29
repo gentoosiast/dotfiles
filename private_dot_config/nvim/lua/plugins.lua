@@ -233,6 +233,11 @@ return require('packer').startup(function(use)
 
       use 'tpope/vim-surround'
 
+      use {
+          'kevinhwang91/nvim-ufo',
+          requires = 'kevinhwang91/promise-async',
+          config = setup_plugin('nvim-ufo')
+      }
       -- https://github.com/p00f/clangd_extensions.nvim
       -- simrat39/rust-tools.nvim
       -- some plugin which updates timestamp at the beginning of document at every save
