@@ -104,6 +104,10 @@ return require('packer').startup(function(use)
           config = setup_plugin('colorizer')
       }
       use {
+          'ziontee113/color-picker.nvim',
+          config = setup_plugin('color-picker')
+      }
+      use {
           -- NOTE: nvim 0.6.0 or later required
           'nvim-telescope/telescope.nvim',
           requires = {'nvim-lua/plenary.nvim'},
