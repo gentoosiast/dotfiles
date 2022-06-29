@@ -2,5 +2,8 @@
 
 require'colorizer'.setup {
     'css';
+    'scss';
+    css = { css = true; };
+    scss = { css = true; }
 }
 
