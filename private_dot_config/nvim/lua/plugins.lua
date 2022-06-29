@@ -238,6 +238,12 @@ return require('packer').startup(function(use)
           requires = 'kevinhwang91/promise-async',
           config = setup_plugin('nvim-ufo')
       }
+
+      use {
+          'anuvyklack/hydra.nvim',
+          requires = 'anuvyklack/keymap-layer.nvim' -- needed only for pink hydras
+      }
+
       -- https://github.com/p00f/clangd_extensions.nvim
       -- simrat39/rust-tools.nvim
       -- some plugin which updates timestamp at the beginning of document at every save
