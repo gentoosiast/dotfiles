@@ -100,7 +100,7 @@ return require('packer').startup(function(use)
 	      config = setup_plugin('hop')
       }
       use {
-          'crivotz/nvim-colorizer.lua',
+          'norcalli/nvim-colorizer.lua',
           config = setup_plugin('colorizer')
       }
       use {
