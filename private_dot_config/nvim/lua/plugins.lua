@@ -1,5 +1,4 @@
 -- Time-stamp: <2021-12-04 20:23:17 gentoosiast>
-
 local setup_plugin = function(fname)
    return string.format('require("settings.%s")', fname)
 end
@@ -53,9 +52,35 @@ return require('packer').startup(function(use)
 	      -- after = 'lualine.nvim'
       }
       use {
-        'SmiteshP/nvim-gps',
-        requires = 'nvim-treesitter/nvim-treesitter',
-        config = setup_plugin('nvim-gps')
+          -- NOTE: nvim 0.6.0 or later recommended when using TreeSitter
+          'nvim-treesitter/nvim-treesitter',
+          -- TODO: disabled TSUpdate for now, produces an error on bootstrap
+          -- run = ':TSUpdate',
+          config = setup_plugin('treesitter')
+      }
+      use {
+          'code-biscuits/nvim-biscuits',
+          requires = 'nvim-treesitter/nvim-treesitter',
+          after = 'nvim-treesitter',
+          config = setup_plugin('nvim-biscuits')
+      }
+      -- docstrings
+      use {
+          "danymat/neogen",
+          requires = "nvim-treesitter/nvim-treesitter",
+          config = setup_plugin('neogen')
+      }
+      use {
+          'SmiteshP/nvim-gps',
+          requires = 'nvim-treesitter/nvim-treesitter',
+          config = setup_plugin('nvim-gps')
+      }
+      use {
+          'windwp/nvim-ts-autotag',
+          config = setup_plugin('nvim-ts-autotag')
+      }
+      use {
+          'p00f/nvim-ts-rainbow'
       }
       use 'rebelot/kanagawa.nvim'
       use 'gpanders/editorconfig.nvim'
@@ -77,19 +102,6 @@ return require('packer').startup(function(use)
           'jose-elias-alvarez/null-ls.nvim',
           requires = {'nvim-lua/plenary.nvim'},
           config = setup_plugin('null-ls')
-      }
-      use {
-          -- NOTE: nvim 0.6.0 or later recommended when using TreeSitter
-          'nvim-treesitter/nvim-treesitter',
-          -- TODO: disabled TSUpdate for now, produces an error on bootstrap
-          -- run = ':TSUpdate',
-          config = setup_plugin('treesitter')
-      }
-      use {
-          'code-biscuits/nvim-biscuits',
-          requires = 'nvim-treesitter/nvim-treesitter',
-          after = 'nvim-treesitter',
-          config = setup_plugin('nvim-biscuits')
       }
       use {
 	      'folke/which-key.nvim',
@@ -163,13 +175,6 @@ return require('packer').startup(function(use)
           config = setup_plugin('indent-blankline')
       }
 
-      -- docstrings
-      use {
-          "danymat/neogen",
-          requires = "nvim-treesitter/nvim-treesitter",
-          config = setup_plugin('neogen')
-      }
-
       use {
           "numToStr/Comment.nvim",
           config = setup_plugin('comment')
@@ -224,15 +229,6 @@ return require('packer').startup(function(use)
       use {
           'catppuccin/nvim',
           as = 'catppuccin'
-      }
-
-      use {
-          'windwp/nvim-ts-autotag',
-          config = setup_plugin('nvim-ts-autotag')
-      }
-      
-      use {
-          'p00f/nvim-ts-rainbow'
       }
 
       use 'tpope/vim-surround'
