@@ -230,6 +230,10 @@ return require('packer').startup(function(use)
           'windwp/nvim-ts-autotag',
           config = setup_plugin('nvim-ts-autotag')
       }
+      
+      use {
+          'p00f/nvim-ts-rainbow'
+      }
 
       use 'tpope/vim-surround'
 

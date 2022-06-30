@@ -7,6 +7,9 @@ require'nvim-treesitter.configs'.setup {
 		enable = true,
         disable = { 'html', 'org' },
         additional_vim_regex_highlighting = { 'org' }  -- Required since TS highlighter doesn't support all syntax features (conceal)
-	}
+	},
+    rainbow = {
+        enable = true
+    }
 }
 
