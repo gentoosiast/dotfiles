@@ -254,7 +254,8 @@ return require('packer').startup(function(use)
 
       use {
           'anuvyklack/hydra.nvim',
-          requires = 'anuvyklack/keymap-layer.nvim' -- needed only for pink hydras
+          requires = 'anuvyklack/keymap-layer.nvim', -- needed only for pink hydras
+          config = setup_plugin('hydra')
       }
 
       -- https://github.com/p00f/clangd_extensions.nvim
