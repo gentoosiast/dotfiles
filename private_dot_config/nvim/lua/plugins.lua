@@ -79,6 +79,7 @@ return require('packer').startup(function(use)
           'windwp/nvim-ts-autotag',
           config = setup_plugin('nvim-ts-autotag')
       }
+      -- config in settings/treesitter.lua
       use {
           'p00f/nvim-ts-rainbow'
       }
